@@ -7,6 +7,9 @@ import {
   replaceRange,
   rewriteCode
 } from './rename'
+import {
+  getFiles
+} from './utils'
 
 test('isRelativeImportPath', t => {
   const isRelative = isRelativeImportPath('./aaa')
@@ -49,11 +52,12 @@ test('rewriteCode', t => {
 
 import path from 'path'
 test('rename', t => {
-  const a = path.resolve(__dirname, '../test-fixtures/src/foo.js')
-  const b = path.resolve(__dirname, '../test-fixtures/src/bar.js')
-  const changeset = rename(a, b)
-  t.is(changeset[0].path, path.resolve(__dirname, '../test-fixtures/src/hah/xxx.js'))
+  const a = path.resolve(__dirname, '../test-fixtures/foo.js')
+  const b = path.resolve(__dirname, '../test-fixtures/bar.js')
+  // const changeset = rename(a, b, getFiles(path.resolve(__dirname, '../test-fixtures')))
+  const changeset = rename(a, b, getFiles())
+  t.is(changeset[0].path, path.resolve(__dirname, '../test-fixtures/hah/xxx.js'))
   t.is(changeset[0].result, "/* @flow */\nimport '../bar'\n")
-  t.is(changeset[1].path, path.resolve(__dirname, '../test-fixtures/src/index.js'))
+  t.is(changeset[1].path, path.resolve(__dirname, '../test-fixtures/index.js'))
   t.is(changeset[1].result, "/* @flow */\nimport foo from './bar'\nfoo()\n")
 })

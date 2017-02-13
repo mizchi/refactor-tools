@@ -3,9 +3,6 @@ import {parse} from 'babylon'
 import traverse from 'babel-traverse'
 import path from 'path'
 import fs from 'fs'
-import glob from 'glob'
-
-const cwd = process.cwd()
 
 type Detected = {
   source: any,
@@ -46,11 +43,6 @@ export function rewriteCode (code: string, changes: Detected[]): string {
   return lines.join('\n')
 }
 
-function getFiles (): string[] {
-  const files = glob.sync('**/*.js', {ignore: '**/node_modules/**', cwd: cwd})
-  return files
-}
-
 function parseToAst (code: string): any {
   return parse(code, {sourceType: 'module',
     plugins: [
@@ -68,10 +60,11 @@ function parseToAst (code: string): any {
     ]})
 }
 
-export function rename (fromAbsPath: string, toAbsPath: string): Change[] {
-  const files = getFiles()
+export function rename (fromAbsPath: string, toAbsPath: string, targetFiles: string[]): Change[] {
   const changeset = []
-  for (const fpath of files) {
+  const cwd = process.cwd()
+
+  for (const fpath of targetFiles) {
     const absFilePath = path.resolve(cwd, fpath)
     const absFileDir = path.dirname(absFilePath)
     const code = fs.readFileSync(absFilePath).toString()
@@ -103,12 +96,4 @@ export function rename (fromAbsPath: string, toAbsPath: string): Change[] {
     }
   }
   return changeset
-}
-
-export function renameFilesToDir (paths: string[], toDir: string): Change[][] {
-  return paths.map(p => {
-    const base = path.basename(p)
-    const dest = path.resolve(toDir, base)
-    return rename(p, dest)
-  })
 }

@@ -1,13 +1,15 @@
 /* @flow */
 import path from 'path'
 import fs from 'fs'
-import {rename} from './rename'
+import { rename } from './rename'
+import { getFiles } from './utils'
 
 // debug property
 const dryRun = false
 
 function execRename (fromPath: string, destPath: string) {
-  const results = rename(fromPath, destPath)
+  const files = getFiles()
+  const results = rename(fromPath, destPath, files)
   for (const r of results) {
     if (dryRun) {
       console.log('rewrite:', r.path)
