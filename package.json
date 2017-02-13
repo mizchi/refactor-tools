@@ -37,7 +37,7 @@
     "babel": "inherit"
   },
   "files": [
-    "bin",
-    "lib"
+    "bin/",
+    "lib/"
   ]
 }
