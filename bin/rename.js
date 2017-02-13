@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* @flow */
 const path = require('path')
 const fs = require('fs')
