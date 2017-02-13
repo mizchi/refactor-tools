@@ -1,6 +1,6 @@
 /* @flow */
 import glob from 'glob'
-// import path from 'path'
+import {parse} from 'babylon'
 
 type GetFileOptions = {
   dir?: string,
@@ -13,5 +13,21 @@ export function getFiles (opts?: GetFileOptions = {}): string[] {
       absolute: true,
       cwd: opts.dir || process.cwd()
     })
-    // .map(p => path.resolve(process.cwd(), p))
+}
+
+export function parseToAst (code: string): any {
+  return parse(code, {sourceType: 'module',
+    plugins: [
+      'jsx',
+      'flow',
+      'decorators',
+      'doExpressions',
+      'exportExtensions',
+      'classProperties',
+      'asyncGenerators',
+      'objectRestSpread',
+      'functionBind',
+      'functionSent',
+      'dynamicImport'
+    ]})
 }
