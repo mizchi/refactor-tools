@@ -68,7 +68,7 @@ function parseToAst (code: string): any {
     ]})
 }
 
-export default function rename (fromAbsPath: string, toAbsPath: string): Change[] {
+export function rename (fromAbsPath: string, toAbsPath: string): Change[] {
   const files = getFiles()
   const changeset = []
   for (const fpath of files) {
@@ -89,7 +89,6 @@ export default function rename (fromAbsPath: string, toAbsPath: string): Change[
                 source: n.node.source,
                 to: relExpr
               })
-              // n.node.source.value = relExpr
             }
           }
         }
@@ -104,4 +103,12 @@ export default function rename (fromAbsPath: string, toAbsPath: string): Change[
     }
   }
   return changeset
+}
+
+export function renameFilesToDir (paths: string[], toDir: string): Change[][] {
+  return paths.map(p => {
+    const base = path.basename(p)
+    const dest = path.resolve(toDir, base)
+    return rename(p, dest)
+  })
 }

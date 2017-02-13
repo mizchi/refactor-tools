@@ -1,6 +1,7 @@
 /* @flow */
 import test from 'ava'
-import rename, {
+import {
+  rename,
   isRelativeImportPath,
   convertToMovedPath,
   replaceRange,
