@@ -17,9 +17,12 @@ $ refactor-tools-rename a.js src/a.js
 
 ## TODO
 
+- [x] `import '<path>'`
+- [x] `import lib from '<path>'`
+- [ ] `require('<path>')`
 - [x] Rename file
-- [ ] Rename files to dir
-- [ ] Rename dir name
+- [x] Rename files to dir
+- [x] Rename dir name
 - [ ] Rename variables in file scope
 - [ ] Rename exported symbols
 - [ ] Documentation
